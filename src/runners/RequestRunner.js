@@ -227,6 +227,20 @@ var RequestRunner = jsface.Class([Queue, EventEmitter], {
         if(Globals.responseEncoding) {
             RequestOptions.encoding = Globals.responseEncoding;
         }
+        if (RequestOptions.headers['client-auth-key']) {
+            RequestOptions.agentOptions = {
+                ca: fs.readFileSync(path.join(process.cwd(), RequestOptions.headers['client-auth-ca'])),
+                cert: fs.readFileSync(path.join(process.cwd(), RequestOptions.headers['client-auth-cert'])),
+                key: fs.readFileSync(path.join(process.cwd(), RequestOptions.headers['client-auth-key'])),
+                passphrase: RequestOptions.headers['client-auth-passphrase'],
+                securityOptions: RequestOptions.headers['client-auth-securityOptions'] || undefined
+            };
+            delete RequestOptions.headers['client-auth-ca'];
+            delete RequestOptions.headers['client-auth-cert'];
+            delete RequestOptions.headers['client-auth-key'];
+            delete RequestOptions.headers['client-auth-passphrase'];
+            delete RequestOptions.headers['client-auth-securityOptions'];
+        }
 
 		this._setBodyData(RequestOptions, request);
 		return RequestOptions;
