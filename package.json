@@ -10,6 +10,7 @@
     "type": "git",
     "url": "git://github.com/a85/Newman.git"
   },
+  "private": true,
   "contributors": [
     {
       "name": "Prakhar Srivastav",
